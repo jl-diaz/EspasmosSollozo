@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Espasmos del Sollozo — Guía Pediátrica</title>
+  <link rel="icon" type="image/png" href="./img/logo.png">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet"/>
+
+  <!-- Lenis -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Poppins', 'sans-serif'] },
+          colors: {
+            violet:  '#c478b8',
+            indigo:  '#c478b8',
+            fuchsia: '#f3c2ea',
+            lime:    '#f5d7ef',
+            amber:   '#84b6f4',
+            neon:    '#c4dafa',
+            ink:     '#0f1f35',
+            paper:   '#fdf0fa',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; }
+
+    :root {
+      --violet:  #c478b8;
+      --indigo:  #c478b8;
+      --fuchsia: #f3c2ea;
+      --lime:    #f5d7ef;
+      --amber:   #84b6f4;
+      --neon:    #c4dafa;
+      --ink:     #0f1f35;
+      --paper:   #fdf0fa;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ─── Grain ─── */
+    body::after {
+      content:'';
+      position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events:none; z-index:9999; opacity:.5;
+    }
+
+    /* ─── Scroll bar ─── */
+    #progress-bar {
+      position:fixed; top:0; left:0; height:4px; z-index:10000;
+      background: linear-gradient(90deg, #c478b8, #f3c2ea, #84b6f4);
+      width:0%; transition:width .08s linear;
+      border-radius:0 4px 4px 0;
+      box-shadow: 0 0 12px rgba(243,194,234,.8);
+    }
+
+    /* ─── Navbar ─── */
+    #navbar {
+      transition: background .4s, box-shadow .4s, backdrop-filter .4s;
+    }
+    #navbar span{
+      transition: background .4s, box-shadow .4s, backdrop-filter .4s;
+      color: white;
+    }
+    #navbar a div{
+      width: 50px;
+      height: 50px;
+      margin-right: 5px;
+    }
+    #navbar.scrolled {
+      background: rgba(253,240,250,.95);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 2px 32px rgba(196,120,184,.15);
+    }
+
+    #navbar.scrolled span{
+      color: var(--ink);
+    }
+
+    .nav-link {
+      position:relative; font-weight:500; font-size:.875rem; color:var(--ink);
+      transition: color .2s;
+    }
+    .nav-link::after {
+      content:''; position:absolute; left:0; bottom:-3px;
+      width:0; height:2px;
+      background: linear-gradient(90deg, #c478b8, #f3c2ea);
+      border-radius:2px; transition:width .3s cubic-bezier(.22,.61,.36,1);
+    }
+    .nav-link:hover { color: var(--violet); }
+    .nav-link:hover::after { width:100%; }
+
+    /* ─── Hero ─── */
+    .hero-bg {
+      background: #0f1f35;
+      position: relative;
+      overflow: hidden;
+    }
+    .mesh {
+      position:absolute; border-radius:50%; filter:blur(90px); pointer-events:none;
+    }
+    .hero-tag {
+      display:inline-flex; align-items:center; gap:.5rem;
+      border:1px solid rgba(243,194,234,.6);
+      background: rgba(243,194,234,.12);
+      color: #f5d7ef;
+      padding:.4rem 1.1rem; border-radius:999px;
+      font-size:.78rem; font-weight:600; letter-spacing:.04em;
+    }
+    .big-title {
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight:900; line-height:1.02; color:#fff;
+    }
+    .big-title .accent {
+      background: linear-gradient(135deg, #fdf0fa, #f3c2ea, #c478b8);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .stat-pill {
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+      border-radius:16px; padding:1.25rem 1.75rem; backdrop-filter:blur(8px);
+    }
+    .stat-num {
+      font-size:2.8rem; font-weight:800;
+      background: linear-gradient(135deg, #f5d7ef, #f3c2ea);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    /* ─── Section labels ─── */
+    .sec-label {
+      display:inline-block;
+      font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+      padding:.35rem 1rem; border-radius:999px;
+      background:rgba(196,120,184,.12); color:#c478b8;
+      margin-bottom:1rem;
+    }
+    .sec-title {
+      font-size:clamp(1.9rem,4vw,3.2rem); font-weight:800; line-height:1.15;
+      color:var(--ink);
+    }
+    .underline-accent {
+      width:56px; height:5px; border-radius:3px;
+      background:linear-gradient(90deg,#c478b8,#f3c2ea);
+      margin-top:.9rem;
+    }
+
+    /* ─── Cards ─── */
+    .card {
+      background:#fff; border-radius:20px;
+      box-shadow:0 4px 32px rgba(196,120,184,.08);
+      transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s;
+    }
+    .card:hover {
+      transform:translateY(-6px);
+      box-shadow:0 16px 56px rgba(196,120,184,.18);
+    }
+    .icon-box {
+      width:52px; height:52px; border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.5rem; flex-shrink:0;
+    }
+
+    /* ─── Types ─── */
+    .type-card {
+      border-radius:24px; padding:2.25rem;
+      position:relative; overflow:hidden;
+    }
+    .type-cian { background:linear-gradient(135deg,#3d1535,#7a3070); color:#fff; }
+    .type-palid { background:linear-gradient(135deg,#1a2a4a,#2d5080); color:#fff; }
+    .type-badge {
+      display:inline-flex; align-items:center; gap:.4rem;
+      font-size:.72rem; font-weight:700; letter-spacing:.06em;
+      padding:.3rem .85rem; border-radius:999px; margin-bottom:1.2rem;
+    }
+
+    /* ─── Timeline phases ─── */
+    .phase-card {
+      background:#fff; border-radius:20px;
+      padding:2rem 1.75rem;
+      box-shadow:0 4px 28px rgba(0,0,0,.06);
+      position:relative; overflow:hidden;
+    }
+    .phase-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:5px;
+    }
+    .phase-before::before { background:linear-gradient(90deg,#f3c2ea,#f5d7ef); }
+    .phase-during::before { background:linear-gradient(90deg,#c478b8,#f3c2ea); }
+    .phase-after::before  { background:linear-gradient(90deg,#84b6f4,#c4dafa); }
+
+    /* ─── Do/Don't ─── */
+    .do-item {
+      display:flex; gap:.9rem; align-items:flex-start;
+      background:#f0fdf3; border:1px solid #c2f3c6;
+      border-radius:14px; padding:1.1rem 1.25rem;
+    }
+    .dont-item {
+      display:flex; gap:.9rem; align-items:flex-start;
+      background:#fff0f0; border:1px solid #fac4c4;
+      border-radius:14px; padding:1.1rem 1.25rem;
+    }
+
+    /* ─── CAROUSEL ─── */
+    .carousel-section {
+      background:#0f1f35;
+      position:relative; overflow:hidden;
+    }
+    .carousel-wrap {
+      position:relative;
+      /* padding deixa espaço para os botões laterais */
+      padding:0 3.5rem;
+    }
+    @media(max-width:640px){
+      .carousel-wrap { padding:0 2.5rem; }
+    }
+    .carousel-viewport {
+      overflow:hidden;
+      border-radius:16px;
+    }
+    .carousel-track {
+      display:flex;
+      gap:1.5rem;
+      /* NO transition here — set via JS only when animating */
+      will-change:transform;
+      user-select:none;
+    }
+    .tc {
+      flex-shrink:0;
+      width:260px;
+      position:relative;
+    }
+    @media(min-width:640px){  .tc { width:280px; } }
+    @media(min-width:1024px){ .tc { width:300px; } }
+
+    /* Card flip */
+    .tc-inner {
+      height:340px;
+      position:relative;
+      transform-style:preserve-3d;
+      transition:transform .55s cubic-bezier(.22,.61,.36,1);
+      cursor:pointer;
+    }
+    .tc:hover .tc-inner,
+    .tc.flipped .tc-inner { transform:rotateY(180deg); }
+
+    .tc-front, .tc-back {
+      position:absolute; inset:0;
+      border-radius:20px;
+      backface-visibility:hidden;
+      -webkit-backface-visibility:hidden;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      padding:2rem;
+    }
+    .tc-front {
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter:blur(8px);
+    }
+    .tc-back {
+      transform:rotateY(180deg);
+      border:none;
+    }
+    .tc-avatar {
+      width:150px; height:150px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:2.2rem; margin-bottom:1.2rem;
+      position:relative;
+    }
+    .tc-avatar::after {
+      content:'';
+      position:absolute; inset:-4px;
+      border-radius:50%; border:2px solid transparent;
+      background:linear-gradient(135deg,#f3c2ea,#c478b8) border-box;
+      -webkit-mask:linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite:destination-out;
+      mask-composite:exclude;
+    }
+    .tc-role-badge {
+      font-size:.7rem; font-weight:600; letter-spacing:.05em;
+      padding:.25rem .75rem; border-radius:999px; margin-top:.85rem;
+    }
+
+    /* Nav buttons */
+    .car-btn {
+      position:absolute; top:50%; transform:translateY(-50%);
+      width:44px; height:44px; border-radius:50%;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+      color:#fff; font-size:1.2rem; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; z-index:20;
+      transition:background .25s, border-color .25s, transform .25s;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .car-btn:hover {
+      background:#c478b8;
+      border-color:#c478b8;
+      transform:translateY(-50%) scale(1.1);
+    }
+    #car-prev { left:0; }
+    #car-next { right:0; }
+
+    /* Dots */
+    .car-dot {
+      height:8px; border-radius:999px;
+      background:rgba(255,255,255,.25);
+      width:8px;
+      transition:background .3s, width .3s;
+      cursor:pointer; border:none;
+    }
+    .car-dot.active {
+      background:#f3c2ea;
+      width:28px;
+      box-shadow:0 0 10px rgba(243,194,234,.9);
+    }
+
+    /* ─── Reveal ─── */
+    .reveal { opacity:0; transform:translateY(44px); }
+
+    /* ─── Footer ─── */
+    .footer-bg { background:#0f1f35; }
+
+    /* ─── Hamburger ─── */
+    #mobile-menu {
+      max-height:0; overflow:hidden; opacity:0;
+      transition:max-height .4s ease, opacity .4s;
+    }
+    #mobile-menu.open { max-height:500px; opacity:1; }
+
+    /* ─── Diagonal separator ─── */
+    .diagonal-sep {
+      height:80px; background:var(--paper);
+      clip-path:polygon(0 0,100% 100%,100% 100%,0 100%);
+    }
+
+    /* custom scrollbar */
+    ::-webkit-scrollbar{ width:6px; }
+    ::-webkit-scrollbar-track{ background:transparent; }
+    ::-webkit-scrollbar-thumb{ background:#c478b8; border-radius:3px; }
+  </style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div id="progress-bar"></div>
+
+<!-- ══════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-4">
+  <div class="max-w-6xl mx-auto flex items-center justify-between">
+
+    <a href="#hero" class="flex items-center gap-2.5 group">
+      <div class="rounded-xl flex items-center justify-center font-bold text-sm text-white"
+           style="box-shadow:0 4px 14px rgba(196,120,184,0.5);">
+           <img src="./img/logo.png" alt="">
+      </div>
+      <span class="font-bold text-ink text-base hidden sm:block">Espasmos del Sollozo</span>
+    </a>
+
+    <ul class="hidden md:flex items-center gap-7">
+      <li><a href="#que-es"  class="nav-link">¿Qué es?</a></li>
+      <li><a href="#causas"  class="nav-link">Causas</a></li>
+      <li><a href="#signos"  class="nav-link">Signos</a></li>
+      <li><a href="#hacer"   class="nav-link">Actuación</a></li>
+      <li><a href="#equipo"  class="nav-link">Equipo</a></li>
+    </ul>
+
+    <button id="ham-btn" class="md:hidden p-2 flex flex-col gap-1.5" aria-label="Abrir menú">
+      <span class="block w-5 h-0.5 bg-ink rounded transition-all"></span>
+      <span class="block w-5 h-0.5 bg-ink rounded transition-all"></span>
+      <span class="block w-3.5 h-0.5 bg-ink rounded transition-all"></span>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="md:hidden mt-2 mx-0 rounded-2xl overflow-hidden"
+       style="background:rgba(245,215,239,.97);backdrop-filter:blur(16px);">
+    <div class="divide-y divide-violet/10">
+      <a href="#que-es"  class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">¿Qué es?</a>
+      <a href="#causas"  class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Causas</a>
+      <a href="#signos"  class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Signos</a>
+      <a href="#hacer"   class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Actuación</a>
+      <a href="#equipo"  class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Equipo</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section id="hero" class="hero-bg min-h-screen flex items-center pt-28 pb-20 px-6 md:px-12">
+
+  <!-- Mesh blobs -->
+  <div class="mesh w-[600px] h-[600px] top-[-100px] right-[-150px] opacity-30" style="position:absolute;background:#c478b8"></div>
+  <div class="mesh w-[400px] h-[400px] top-[60%] left-[-120px] opacity-20" style="position:absolute;background:#f3c2ea"></div>
+  <div class="mesh w-[300px] h-[300px] bottom-[-50px] right-[20%] opacity-20" style="position:absolute;background:#f3c2ea"></div>
+
+  <!-- Grid overlay -->
+  <div class="absolute inset-0 opacity-[0.04]"
+       style="background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:60px 60px;pointer-events:none"></div>
+
+  <div class="max-w-6xl mx-auto w-full relative z-10">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left -->
+      <div>
+        <div id="h-tag" class="reveal hero-tag mb-7">
+          <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#f3c2ea"></span>
+          Información Médica Pediátrica
+        </div>
+
+        <h1 id="h-title" class="reveal big-title mb-7">
+          Espasmos<br/>
+          <span class="accent">del Sollozo</span>
+        </h1>
+
+        <p id="h-sub" class="reveal text-white/60 text-lg leading-relaxed max-w-lg mb-10 font-light">
+          Una guía clara y tranquilizadora para padres y cuidadores sobre este fenómeno pediátrico frecuente pero incomprendido.
+        </p>
+
+        <div id="h-btns" class="reveal flex flex-wrap gap-4">
+          <a href="#que-es" class="px-7 py-3.5 rounded-full font-semibold text-sm text-white"
+             style="background:linear-gradient(135deg,#c478b8,#f3c2ea);box-shadow:0 8px 24px rgba(196,120,184,.45)">
+            Explorar ↓
+          </a>
+          <a href="#hacer" class="px-7 py-3.5 rounded-full font-semibold text-sm border border-white/20 text-white hover:border-fuchsia hover:text-fuchsia transition-colors" style="--tw-hover-text-opacity:1">
+            ¿Qué hago?
+          </a>
+        </div>
+      </div>
+
+      <!-- Right — stats grid -->
+      <div id="h-stats" class="reveal grid grid-cols-2 gap-4">
+        <div class="stat-pill col-span-2 text-center">
+          <p class="stat-num" id="counter-pct">0%</p>
+          <p class="text-white/50 text-sm mt-1 font-light">de los niños lo experimenta</p>
+        </div>
+        <div class="stat-pill text-center">
+          <p class="text-3xl font-extrabold text-white">6m–6a</p>
+          <p class="text-white/40 text-xs mt-1">Edad típica</p>
+        </div>
+        <div class="stat-pill text-center">
+          <p class="text-3xl font-extrabold text-white">~60s</p>
+          <p class="text-white/40 text-xs mt-1">Duración máxima</p>
+        </div>
+        <div class="stat-pill col-span-2 flex items-center gap-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+               style="background:rgba(243,194,234,.2)">✅</div>
+          <p class="text-white/60 text-sm font-light leading-snug">No causa daño cerebral ni pone en riesgo la vida del niño.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     QUÉ ES
+══════════════════════════════════════ -->
+<section id="que-es" class="py-28 px-6 md:px-12" style="background-color: #fff;">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="grid lg:grid-cols-2 gap-16 items-start">
+
+      <div class="reveal">
+        <span class="sec-label">Definición</span>
+        <h2 class="sec-title">¿Qué son los<br/>Espasmos del Sollozo?</h2>
+        <div class="underline-accent mb-8"></div>
+
+        <p class="text-ink/70 text-base leading-relaxed mb-5">
+          Son episodios <strong class="text-ink">involuntarios e inconscientes</strong> en los que un niño, al llorar intensamente, detiene la respiración por un breve momento, pudiendo provocar cambio de color en su piel y pérdida transitoria del conocimiento.
+        </p>
+        <p class="text-ink/70 text-base leading-relaxed mb-8">
+          El cerebro reanuda la respiración de manera automática. El episodio se resuelve solo en segundos y <strong style="color:#c478b8">no causa ninguna secuela neurológica</strong>.
+        </p>
+
+        <div class="rounded-2xl p-5 flex gap-4 items-start"
+             style="background:rgba(196,120,184,.07);border:1px solid rgba(196,120,184,.25)">
+          <span class="text-2xl mt-0.5">💡</span>
+          <p class="text-ink/70 text-sm leading-relaxed">
+            Conocidos en la literatura médica como <em>Breath-Holding Spells</em> o <em>Apnea Refleja del Llanto</em>. Son distintos de la epilepsia, aunque pueden parecerse superficialmente.
+          </p>
+        </div>
+      </div>
+
+      <div class="reveal space-y-4" style="animation-delay:.12s">
+        <div class="card p-6 flex items-start gap-5" style="box-shadow:0 4px 8px rgba(196,120,184,0.5);">
+          <div class="icon-box" style="background:rgba(196,120,184,.12)">🧠</div>
+          <div>
+            <h3 class="font-bold text-ink mb-1">Totalmente benigno</h3>
+            <p class="text-ink/60 text-sm leading-relaxed">No es epilepsia, no daña el cerebro y desaparece espontáneamente antes de los 6 años en la mayoría de los casos.</p>
+          </div>
+        </div>
+        <div class="card p-6 flex items-start gap-5" style="box-shadow:0 4px 8px rgba(196,120,184,0.5);">
+          <div class="icon-box" style="background:rgba(132,182,244,.15)">🧬</div>
+          <div>
+            <h3 class="font-bold text-ink mb-1">Componente hereditario</h3>
+            <p class="text-ink/60 text-sm leading-relaxed">Si uno de los padres los tuvo de niño, el hijo tiene mayor probabilidad de presentarlos.</p>
+          </div>
+        </div>
+        <div class="card p-6 flex items-start gap-5" style="box-shadow:0 4px 8px rgba(196,120,184,0.5);">
+          <div class="icon-box" style="background:rgba(243,194,234,.18)">🔁</div>
+          <div>
+            <h3 class="font-bold text-ink mb-1">Patrón predecible</h3>
+            <p class="text-ink/60 text-sm leading-relaxed">Siguen un patrón de tres fases (detonante → episodio → recuperación) que ayuda a reconocerlos.</p>
+          </div>
+        </div>
+        <div class="card p-6 flex items-start gap-5" style="box-shadow:0 4px 8px rgba(196,120,184,0.5);">
+          <div class="icon-box" style="background:rgba(196,120,184,.12)">📊</div>
+          <div>
+            <h3 class="font-bold text-ink mb-1">Afecta al 5% de los niños</h3>
+            <p class="text-ink/60 text-sm leading-relaxed">Entre los 6 meses y los 6 años de edad, con pico máximo alrededor de los 2 años.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     CAUSAS
+══════════════════════════════════════ -->
+<section id="causas" class="py-28 px-6 md:px-12" style="background:#fff">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="text-center mb-16 reveal">
+      <span class="sec-label">Origen</span>
+      <h2 class="sec-title">¿Por qué ocurren?</h2>
+      <div class="underline-accent mx-auto"></div>
+    </div>
+
+    <!-- Trigger cards -->
+    <div class="grid md:grid-cols-3 gap-6 mb-16">
+      <div class="card p-7 reveal" style="box-shadow:0 4px 8px rgba(196,120,184,0.5);">
+        <div class="w-14 h-14 rounded-2xl mb-5 flex items-center justify-center text-2xl"
+             style="background:linear-gradient(135deg,rgba(196,120,184,.2),rgba(243,194,234,.2))">😢</div>
+        <h3 class="font-bold text-ink text-lg mb-3">Llanto intenso</h3>
+        <p class="text-ink/60 text-sm leading-relaxed">El detonante más común. El niño llora con tanta fuerza que activa un reflejo involuntario de apnea.</p>
+      </div>
+      <div class="card p-7 reveal" style="animation-delay:.1s; box-shadow:0 4px 8px rgba(120, 125, 196, 0.5);">
+        <div class="w-14 h-14 rounded-2xl mb-5 flex items-center justify-center text-2xl"
+             style="background:linear-gradient(135deg,rgba(132,182,244,.2),rgba(196,218,250,.2))">💥</div>
+        <h3 class="font-bold text-ink text-lg mb-3">Susto o dolor súbito</h3>
+        <p class="text-ink/60 text-sm leading-relaxed">Un golpe inesperado o una sorpresa intensa activan el sistema nervioso autónomo desencadenando el episodio.</p>
+      </div>
+      <div class="card p-7 reveal" style="box-shadow:0 4px 8px rgba(196,120,184,0.5); animation-delay:.2s">
+        <div class="w-14 h-14 rounded-2xl mb-5 flex items-center justify-center text-2xl"
+             style="background:linear-gradient(135deg,rgba(243,194,234,.2),rgba(196,120,184,.15))">🧬</div>
+        <h3 class="font-bold text-ink text-lg mb-3">Predisposición genética</h3>
+        <p class="text-ink/60 text-sm leading-relaxed">Tiene base hereditaria comprobada. Los antecedentes familiares aumentan significativamente la probabilidad.</p>
+      </div>
+    </div>
+
+    <!-- 2 Types -->
+    <div class="grid md:grid-cols-2 gap-8 reveal">
+
+      <div class="type-card type-cian">
+        <div class="absolute -right-8 -top-8 w-40 h-40 rounded-full opacity-15" style="background:#f3c2ea"></div>
+        <div class="type-badge" style="background:rgba(132,182,244,.2);color:#c4dafa">
+          <span>🔵</span> Tipo Cianótico — 75%
+        </div>
+        <h3 class="text-2xl font-extrabold text-white mb-5">Cianótico</h3>
+        <ul class="space-y-3">
+          <li class="flex gap-3 text-sm text-white/80"><span class="mt-0.5 font-bold" style="color:#84b6f4">▸</span>Desencadenado por llanto o frustración</li>
+          <li class="flex gap-3 text-sm text-white/80"><span class="mt-0.5 font-bold" style="color:#84b6f4">▸</span>Piel azulada o morada (cianosis)</li>
+          <li class="flex gap-3 text-sm text-white/80"><span class="mt-0.5 font-bold" style="color:#84b6f4">▸</span>Apnea en espiración forzada</li>
+          <li class="flex gap-3 text-sm text-white/80"><span class="mt-0.5 font-bold" style="color:#84b6f4">▸</span>Posible pérdida breve del conocimiento</li>
+          <li class="flex gap-3 text-sm text-white/80"><span class="mt-0.5 font-bold" style="color:#84b6f4">▸</span>El más frecuente e identificable</li>
+        </ul>
+      </div>
+
+      <div class="type-card type-palid">
+        <div class="absolute -right-8 -top-8 w-40 h-40 rounded-full opacity-15" style="background:#84b6f4"></div>
+        <div class="type-badge" style="background:rgba(132,182,244,.2);color:#c4dafa">
+          <span>⚪</span> Tipo Pálido — 25%
+        </div>
+        <h3 class="text-2xl font-extrabold text-white mb-5">Pálido</h3>
+        <ul class="space-y-3">
+          <li class="flex gap-3 text-sm text-white/80"><span class="mt-0.5 font-bold" style="color:#84b6f4">▸</span>Desencadenado por susto o dolor súbito</li>
+          <li class="flex gap-3 text-sm text-white/80"><span class="mt-0.5 font-bold" style="color:#84b6f4">▸</span>Piel pálida o grisácea</li>
+          <li class="flex gap-3 text-sm text-white/80"><span class="mt-0.5 font-bold" style="color:#84b6f4">▸</span>Reflejo vagal enlentece el corazón</li>
+          <li class="flex gap-3 text-sm text-white/80"><span class="mt-0.5 font-bold" style="color:#84b6f4">▸</span>Llanto mínimo o ausente</li>
+          <li class="flex gap-3 text-sm text-white/80"><span class="mt-0.5 font-bold" style="color:#84b6f4">▸</span>Más difícil de identificar</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SIGNOS
+══════════════════════════════════════ -->
+<section id="signos" class="py-28 px-6 md:px-12" style="background-color: #fff;">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="text-center mb-16 reveal">
+      <span class="sec-label">Reconocimiento</span>
+      <h2 class="sec-title">Signos y Síntomas</h2>
+      <div class="underline-accent mx-auto mb-5"></div>
+      <p class="text-ink/50 max-w-md mx-auto text-sm">El episodio sigue un patrón de tres fases. Reconocerlas te permitirá actuar con calma.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 mb-12">
+
+      <div class="phase-card phase-before reveal" style="box-shadow:0 4px 8px #c478b986;">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-5"
+             style="background:rgba(243,194,234,.22)">😭</div>
+        <span class="inline-block text-xs font-bold tracking-widest uppercase mb-3" style="color:#c478b8">Fase 1 — Antes</span>
+        <h3 class="font-extrabold text-xl text-ink mb-4">El Detonante</h3>
+        <ul class="space-y-2.5">
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:#c478b8">●</span>Llanto intenso y prolongado</li>
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:#c478b8">●</span>Frustración o enojo fuerte</li>
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:#c478b8">●</span>Golpe o susto repentino</li>
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:#c478b8">●</span>Llanto que se "corta" bruscamente</li>
+        </ul>
+      </div>
+
+      <div class="phase-card phase-during reveal" style="box-shadow:0 4px 8px #b278c486; animation-delay:.12s">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-5"
+             style="background:rgba(196,120,184,.15)">😶</div>
+        <span class="inline-block text-xs font-bold tracking-widest uppercase mb-3" style="color:var(--violet)">Fase 2 — Durante</span>
+        <h3 class="font-extrabold text-xl text-ink mb-4">El Episodio</h3>
+        <ul class="space-y-2.5">
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:var(--violet)">●</span>Pausa respiratoria (apnea)</li>
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:var(--violet)">●</span>Cambio de color: azul o pálido</li>
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:var(--violet)">●</span>Rigidez o flaccidez corporal</li>
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:var(--violet)">●</span>Posible pérdida de conciencia</li>
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:var(--violet)">●</span>Raramente: movimientos tipo convulsión</li>
+        </ul>
+      </div>
+
+      <div class="phase-card phase-after reveal" style="box-shadow:0 4px 8px #4d83bc83; animation-delay:.24s">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-5"
+             style="background:rgba(132,182,244,.15)">😌</div>
+        <span class="inline-block text-xs font-bold tracking-widest uppercase mb-3" style="color:#4d82bc">Fase 3 — Después</span>
+        <h3 class="font-extrabold text-xl text-ink mb-4">Recuperación</h3>
+        <ul class="space-y-2.5">
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:#4d82bc">●</span>Respiración que se reanuda sola</li>
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:#4d82bc">●</span>Color normal regresa en segundos</li>
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:#4d82bc">●</span>Niño puede quedar somnoliento</li>
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:#4d82bc">●</span>Recuperación total en minutos</li>
+          <li class="flex gap-2.5 items-start text-sm text-ink/65"><span class="font-bold mt-0.5" style="color:#4d82bc">●</span>Sin secuelas neurológicas</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Alert -->
+    <div class="reveal rounded-2xl p-6 flex gap-5 items-start"
+         style="background:rgba(243, 255, 74, 0.226);border:1px solid rgb(154, 155, 96)">
+      <span class="text-3xl flex-shrink-0 mt-0.5">⚠️</span>
+      <div>
+        <h4 class="font-bold text-lg mb-1.5" style="color:#3d3d3d">¿Cuándo consultar al médico?</h4>
+        <p class="text-sm leading-relaxed" style="color:#3d3d3d">Si los episodios duran más de 1 minuto, ocurren sin llanto previo, el niño tiene más de 6 años, o los movimientos convulsivos son prolongados, acude al pediatra para descartar otras causas como epilepsia o arritmias.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     HACER / NO HACER
+══════════════════════════════════════ -->
+<section id="hacer" class="py-28 px-6 md:px-12" style="background:#fff">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="text-center mb-16 reveal">
+      <span class="sec-label">Actuación</span>
+      <h2 class="sec-title">¿Qué hacer y qué no?</h2>
+      <div class="underline-accent mx-auto mb-5"></div>
+      <p class="text-ink/50 max-w-md mx-auto text-sm">Tu reacción durante el episodio es clave. La calma es tu mejor herramienta.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-10">
+
+      <!-- DO -->
+      <div class="reveal">
+        <div class="flex items-center gap-3 mb-7">
+          <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white font-bold text-lg"
+               style="background:linear-gradient(135deg,#5bbe71,#8de97b);box-shadow:0 6px 18px rgba(196,120,184,.4)">✓</div>
+          <h3 class="text-2xl font-extrabold text-ink">Sí hacer</h3>
+        </div>
+        <div class="space-y-3">
+          <div class="do-item">
+            <span class="text-xl flex-shrink-0 mt-0.5">🧘</span>
+            <div><strong class="text-ink text-sm font-semibold block mb-0.5">Mantén la calma</strong><p class="text-ink/60 text-sm leading-relaxed">Tu serenidad transmite seguridad y te permite actuar correctamente.</p></div>
+          </div>
+          <div class="do-item">
+            <span class="text-xl flex-shrink-0 mt-0.5">🛡️</span>
+            <div><strong class="text-ink text-sm font-semibold block mb-0.5">Posición lateral de seguridad</strong><p class="text-ink/60 text-sm leading-relaxed">Recuéstalo de lado sobre una superficie plana y suave.</p></div>
+          </div>
+          <div class="do-item">
+            <span class="text-xl flex-shrink-0 mt-0.5">👁️</span>
+            <div><strong class="text-ink text-sm font-semibold block mb-0.5">Observa sin apartarte</strong><p class="text-ink/60 text-sm leading-relaxed">Cronometra el episodio. La mayoría dura menos de 60 segundos.</p></div>
+          </div>
+          <div class="do-item">
+            <span class="text-xl flex-shrink-0 mt-0.5">💨</span>
+            <div><strong class="text-ink text-sm font-semibold block mb-0.5">Asegura la vía aérea</strong><p class="text-ink/60 text-sm leading-relaxed">Retira objetos que puedan obstruir la respiración o causar lesiones.</p></div>
+          </div>
+          <div class="do-item">
+            <span class="text-xl flex-shrink-0 mt-0.5">🤗</span>
+            <div><strong class="text-ink text-sm font-semibold block mb-0.5">Consuélalo al recuperarse</strong><p class="text-ink/60 text-sm leading-relaxed">Calma y afecto sin dramatismo una vez que vuelva en sí.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DON'T -->
+      <div class="reveal" style="animation-delay:.14s">
+        <div class="flex items-center gap-3 mb-7">
+          <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white font-bold text-lg"
+               style="background:linear-gradient(135deg,#c24545,#bc4d4d);box-shadow:0 6px 18px rgba(77,130,188,.35)">✕</div>
+          <h3 class="text-2xl font-extrabold text-ink">No hacer</h3>
+        </div>
+        <div class="space-y-3">
+          <div class="dont-item">
+            <span class="text-xl flex-shrink-0 mt-0.5">🚫</span>
+            <div><strong class="text-ink text-sm font-semibold block mb-0.5">No introduzcas nada en la boca</strong><p class="text-ink/60 text-sm leading-relaxed">Ni dedos, ni cucharas. Puede causar lesiones o asfixia.</p></div>
+          </div>
+          <div class="dont-item">
+            <span class="text-xl flex-shrink-0 mt-0.5">🚫</span>
+            <div><strong class="text-ink text-sm font-semibold block mb-0.5">No lo sacudas ni lo agites</strong><p class="text-ink/60 text-sm leading-relaxed">No interrumpe el episodio y puede provocar lesiones graves.</p></div>
+          </div>
+          <div class="dont-item">
+            <span class="text-xl flex-shrink-0 mt-0.5">🚫</span>
+            <div><strong class="text-ink text-sm font-semibold block mb-0.5">No eches agua fría en la cara</strong><p class="text-ink/60 text-sm leading-relaxed">Puede causar aspiración si inhala agua durante el episodio.</p></div>
+          </div>
+          <div class="dont-item">
+            <span class="text-xl flex-shrink-0 mt-0.5">🚫</span>
+            <div><strong class="text-ink text-sm font-semibold block mb-0.5">No hagas RCP si respira</strong><p class="text-ink/60 text-sm leading-relaxed">El niño reanuda la respiración solo. La RCP innecesaria es perjudicial.</p></div>
+          </div>
+          <div class="dont-item">
+            <span class="text-xl flex-shrink-0 mt-0.5">🚫</span>
+            <div><strong class="text-ink text-sm font-semibold block mb-0.5">No reacciones con pánico excesivo</strong><p class="text-ink/60 text-sm leading-relaxed">Las reacciones dramáticas pueden reforzar el patrón conductual.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     EQUIPO — CAROUSEL ROBUSTO
+══════════════════════════════════════ -->
+<section id="equipo" class="carousel-section py-28 px-6 md:px-12">
+
+  <!-- Mesh decorativo -->
+  <div class="mesh w-96 h-96 opacity-15 -top-20 -right-20" style="position:absolute;background:#f3c2ea"></div>
+  <div class="mesh w-64 h-64 opacity-10 bottom-0 left-0" style="position:absolute;background:#c478b8"></div>
+
+  <div class="max-w-6xl mx-auto relative z-10">
+
+    <div class="text-center mb-16 reveal">
+      <span class="inline-block text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4"
+            style="background:rgba(243,194,234,.2);color:#f3c2ea">Autores</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Nuestro Equipo</h2>
+      <div class="w-14 h-1.5 rounded-full mx-auto mb-4"
+           style="background:linear-gradient(90deg,#c478b8,#f3c2ea)"></div>
+      <p class="text-white/40 text-sm">Hover o toca cada tarjeta para conocer más sobre el integrante</p>
+    </div>
+
+    <!-- CAROUSEL -->
+    <div class="carousel-wrap reveal">
+      <button class="car-btn" id="car-prev" aria-label="Anterior">‹</button>
+      <button class="car-btn" id="car-next" aria-label="Siguiente">›</button>
+
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="car-track">
+
+          <!-- ── Card 1 ── -->
+          <div class="tc">
+            <div class="tc-inner">
+              <div class="tc-front">
+                <div class="tc-avatar" style="background-image: url(./img/Ariana.jpg); background-size: cover;"></div>
+                <h4 class="font-bold text-white text-center text-lg leading-snug">Ariana Sibrian</h4>
+                <p class="text-white/50 text-xs mt-1">Estudiante de ATPS</p>
+                <span class="tc-role-badge" style="background:rgba(243,194,234,.2);color:#f5d7ef">3° Año G</span>
+              </div>
+              <div class="tc-back" style="background:linear-gradient(135deg,#3d1535,#c478b8)">
+                <span class="text-5xl mb-5">❤️‍🩹</span>
+                <h4 class="font-bold text-white text-xl mb-1 text-center">Ariana Sibrian</h4>
+                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Card 2 ── -->
+          <div class="tc">
+            <div class="tc-inner">
+              <div class="tc-front">
+                <div class="tc-avatar" style="background-image: url(./img/Ashley.jpg); background-size: cover;"></div>
+                <h4 class="font-bold text-white text-center text-lg leading-snug">Ashley Rodríguez</h4>
+                <p class="text-white/50 text-xs mt-1">Estudiante de ATPS</p>
+                <span class="tc-role-badge" style="background:rgba(196,120,184,.2);color:#f5d7ef">3° Año G</span>
+              </div>
+              <div class="tc-back" style="background:linear-gradient(135deg,#5a1a50,#f3c2ea)">
+                <span class="text-5xl mb-5">🔬</span>
+                <h4 class="font-bold text-white text-xl mb-1 text-center">Ashley Rodríguez</h4>
+                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Card 3 ── -->
+          <div class="tc">
+            <div class="tc-inner">
+              <div class="tc-front">
+                <div class="tc-avatar" style="background-image: url(./img/Camila.jpg); background-size: cover;"></div>
+                <h4 class="font-bold text-white text-center text-lg leading-snug">Camila Chacón</h4>
+                <p class="text-white/50 text-xs mt-1">Estudiante de ATPS</p>
+                <span class="tc-role-badge" style="background:rgba(243,194,234,.2);color:#f5d7ef">3° Año G</span>
+              </div>
+              <div class="tc-back" style="background:linear-gradient(135deg,#5a1a50,#f3c2ea)">
+                <span class="text-5xl mb-5">💊</span>
+                <h4 class="font-bold text-white text-xl mb-1 text-center">Camila Chacón</h4>
+                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Card 4 ── -->
+          <div class="tc">
+            <div class="tc-inner">
+              <div class="tc-front">
+                <div class="tc-avatar" style="background-image: url(./img/Gabriela.jpg); background-size: cover;"></div>
+                <h4 class="font-bold text-white text-center text-lg leading-snug">Gabriela Recinos</h4>
+                <p class="text-white/50 text-xs mt-1">Estudiante de ATPS</p>
+                <span class="tc-role-badge" style="background:rgba(243,194,234,.2);color:#f5d7ef">3° Año G</span>
+              </div>
+              <div class="tc-back" style="background:linear-gradient(135deg,#2a0a26,#c478b8)">
+                <span class="text-5xl mb-5">🏥</span>
+                <h4 class="font-bold text-white text-xl mb-1 text-center">Gabriela Recinos</h4>
+                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Card 5 ── -->
+          <div class="tc">
+            <div class="tc-inner">
+              <div class="tc-front">
+                <div class="tc-avatar" style="background-image: url(./img/Nicole.jpg); background-size: cover;"></div>
+                <h4 class="font-bold text-white text-center text-lg leading-snug">Nicole Martínez</h4>
+                <p class="text-white/50 text-xs mt-1">Estudiante de ATPS</p>
+                <span class="tc-role-badge" style="background:rgba(243,194,234,.2);color:#f5d7ef">3° Año G</span>
+              </div>
+              <div class="tc-back" style="background:linear-gradient(135deg,#5a1a50,#f3c2ea)">
+                <span class="text-5xl mb-5">🩺</span>
+                <h4 class="font-bold text-white text-xl mb-1 text-center">Nicole Martínez</h4>
+                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Card 6 ── -->
+          <div class="tc">
+            <div class="tc-inner">
+              <div class="tc-front">
+                <div class="tc-avatar" style="background-image: url(./img/Yeimy.jpg); background-size: cover;"></div>
+                <h4 class="font-bold text-white text-center text-lg leading-snug">Yeimy Duarte</h4>
+                <p class="text-white/50 text-xs mt-1">Estudiante de ATPS</p>
+                <span class="tc-role-badge" style="background:rgba(243,194,234,.2);color:#f5d7ef">3° Año G</span>
+              </div>
+              <div class="tc-back" style="background:linear-gradient(135deg,#5a1a50,#f3c2ea)">
+                <span class="text-5xl mb-5">💉</span>
+                <h4 class="font-bold text-white text-xl mb-1 text-center">Yeimy Duarte</h4>
+                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /track -->
+      </div><!-- /viewport -->
+    </div><!-- /carousel-wrap -->
+
+    <!-- Dots -->
+    <div id="car-dots" class="flex justify-center gap-2 mt-10"></div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+    FOOTER
+══════════════════════════════════════ -->
+<footer class="footer-bg px-6 md:px-12 py-16">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-3 gap-10 mb-12">
+
+      <div>
+        <div class="flex items-center gap-2.5 mb-4">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm text-white"
+              style="background-color: rgba(224, 35, 35, 0)px; height: 50px;"><img src="./img/logo.png" alt=""></div>
+          <span class="font-bold text-white">Espasmos del Sollozo</span>
+        </div>
+        <p class="text-white/40 text-sm leading-relaxed">Recurso educativo para padres y cuidadores, desarrollado por estudiantes de ATPS del Colegio Don Bosco.</p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white mb-4">Navegación</h4>
+        <ul class="space-y-2 text-white/40 text-sm">
+          <li><a href="#que-es" class="hover:text-sky-300 transition-colors">¿Qué es?</a></li>
+          <li><a href="#causas" class="hover:text-sky-300 transition-colors">¿Por qué ocurre?</a></li>
+          <li><a href="#signos" class="hover:text-sky-300 transition-colors">Signos y síntomas</a></li>
+          <li><a href="#hacer"  class="hover:text-sky-300 transition-colors">Qué hacer / No hacer</a></li>
+          <li><a href="#equipo" class="hover:text-sky-300 transition-colors">Equipo</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white mb-4">Proyecto</h4>
+        <ul class="space-y-2 text-white/40 text-sm">
+          <li>📚 Atención Primaria en Salud</li>
+          <li>🏫 Colegio Don Bosco</li>
+          <li>📅 2026 — 3° Año</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-8 space-y-4">
+      <div class="rounded-2xl p-5" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+        <p class="text-white/35 text-xs text-center leading-relaxed">
+          ⚕️ <strong class="text-white/50">Aviso médico:</strong> Esta página tiene fines exclusivamente educativos. No reemplaza la evaluación, diagnóstico ni tratamiento de un profesional de la salud. Consulta siempre a tu pediatra ante cualquier episodio o duda.
+        </p>
+      </div>
+      <p class="text-white/20 text-xs text-center">© 2026 — Proyecto para Crea-J. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════
+     JS
+══════════════════════════════════════ -->
+<script>
+/* ─── Lenis ──────────────────────────────────── */
+const lenis = new Lenis({
+  duration: 1.35,
+  easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothTouch: false,
+});
+gsap.registerPlugin(ScrollTrigger);
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t => lenis.raf(t * 1000));
+gsap.ticker.lagSmoothing(0);
+
+/* ─── Progress bar ───────────────────────────── */
+lenis.on('scroll', ({ scroll, limit }) => {
+  document.getElementById('progress-bar').style.width = (scroll / limit * 100) + '%';
+});
+
+/* ─── Navbar scroll ──────────────────────────── */
+lenis.on('scroll', ({ scroll }) => {
+  document.getElementById('navbar').classList.toggle('scrolled', scroll > 60);
+});
+
+/* ─── Hamburger ──────────────────────────────── */
+let mobOpen = false;
+document.getElementById('ham-btn').addEventListener('click', () => {
+  mobOpen = !mobOpen;
+  document.getElementById('mobile-menu').classList.toggle('open', mobOpen);
+});
+function closeMob() {
+  mobOpen = false;
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+
+/* ─── Smooth anchor links ────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) lenis.scrollTo(t, { offset: -76, duration: 1.5 });
+  });
+});
+
+/* ─── GSAP Reveals ───────────────────────────── */
+gsap.utils.toArray('.reveal').forEach(el => {
+  gsap.fromTo(el,
+    { opacity: 0, y: 48 },
+    {
+      opacity: 1, y: 0, duration: .85, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+    }
+  );
+});
+
+/* ─── Hero entrance ──────────────────────────── */
+gsap.timeline({ delay: .15 })
+  .fromTo('#h-tag',   { opacity:0, y:16 }, { opacity:1, y:0, duration:.6, ease:'power3.out' })
+  .fromTo('#h-title', { opacity:0, y:32 }, { opacity:1, y:0, duration:.9, ease:'power3.out' }, '-=.35')
+  .fromTo('#h-sub',   { opacity:0, y:20 }, { opacity:1, y:0, duration:.7, ease:'power3.out' }, '-=.5')
+  .fromTo('#h-btns',  { opacity:0, y:20 }, { opacity:1, y:0, duration:.6, ease:'power3.out' }, '-=.45')
+  .fromTo('#h-stats', { opacity:0, x:40 }, { opacity:1, x:0, duration:.85,ease:'power3.out' }, '-=.55');
+
+/* ─── Counter ────────────────────────────────── */
+ScrollTrigger.create({
+  trigger: '#h-stats', start: 'top 85%', once: true,
+  onEnter() {
+    const el = document.getElementById('counter-pct');
+    const start = performance.now();
+    const dur = 1400;
+    (function step(now) {
+      const p = Math.min((now - start) / dur, 1);
+      el.textContent = Math.floor(p * 5) + '%';
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = '5%';
+    })(start);
+  }
+});
+
+/* ══════════════════════════════════════════════
+   CAROUSEL — robusto, sin glitches
+══════════════════════════════════════════════ */
+(function initCarousel() {
+  const track     = document.getElementById('car-track');
+  const viewport  = document.getElementById('car-track').parentElement;
+  const dotsWrap  = document.getElementById('car-dots');
+  const btnPrev   = document.getElementById('car-prev');
+  const btnNext   = document.getElementById('car-next');
+  const cards     = Array.from(track.querySelectorAll('.tc'));
+  const GAP       = 24; // 1.5rem
+
+  let idx   = 0;       // current index (left-most visible card)
+  let anim  = false;   // animation lock
+  let drag  = { active: false, startX: 0, moved: 0 };
+
+  /* — how many cards are visible based on viewport width — */
+  function visibleCount() {
+    const w = viewport.clientWidth;
+    if (w >= 900) return 3;
+    if (w >= 580) return 2;
+    return 1;
+  }
+
+  /* — card pixel width (including gap after it) — */
+  function cardStep() {
+    const c = cards[0];
+    return c.getBoundingClientRect().width + GAP;
+  }
+
+  /* — max index we can scroll to — */
+  function maxIdx() {
+    return Math.max(0, cards.length - visibleCount());
+  }
+
+  /* — apply transform, optionally animated — */
+  function setOffset(animated) {
+    const offset = idx * cardStep();
+    track.style.transition = animated ? 'transform .5s cubic-bezier(.22,.61,.36,1)' : 'none';
+    track.style.transform  = `translateX(-${offset}px)`;
+  }
+
+  /* — rebuild dots — */
+  function buildDots() {
+    dotsWrap.innerHTML = '';
+    const total = maxIdx() + 1;
+    for (let i = 0; i < total; i++) {
+      const btn = document.createElement('button');
+      btn.className = 'car-dot' + (i === idx ? ' active' : '');
+      btn.setAttribute('aria-label', `Ir a ${i + 1}`);
+      btn.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(btn);
+    }
+  }
+
+  /* — update dots highlight — */
+  function updateDots() {
+    dotsWrap.querySelectorAll('.car-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+  }
+
+  /* — navigate to index — */
+  function goTo(i, animated = true) {
+    if (anim) return;
+    idx = Math.max(0, Math.min(i, maxIdx()));
+    setOffset(animated);
+    updateDots();
+    if (animated) {
+      anim = true;
+      setTimeout(() => { anim = false; }, 520);
+    }
+  }
+
+  btnNext.addEventListener('click', () => goTo(idx >= maxIdx() ? 0 : idx + 1));
+  btnPrev.addEventListener('click', () => goTo(idx <= 0 ? maxIdx() : idx - 1));
+
+  /* — touch — */
+  viewport.addEventListener('touchstart', e => {
+    drag = { active: true, startX: e.touches[0].clientX, moved: 0 };
+  }, { passive: true });
+
+  viewport.addEventListener('touchmove', e => {
+    if (!drag.active) return;
+    drag.moved = drag.startX - e.touches[0].clientX;
+    // live preview while dragging
+    const offset = idx * cardStep() + drag.moved;
+    track.style.transition = 'none';
+    track.style.transform  = `translateX(-${offset}px)`;
+  }, { passive: true });
+
+  viewport.addEventListener('touchend', () => {
+    if (!drag.active) return;
+    drag.active = false;
+    if (drag.moved > 60)       goTo(Math.min(idx + 1, maxIdx()));
+    else if (drag.moved < -60) goTo(Math.max(idx - 1, 0));
+    else                        goTo(idx); // snap back
+  });
+
+  /* — mouse drag — */
+  viewport.addEventListener('mousedown', e => {
+    drag = { active: true, startX: e.clientX, moved: 0 };
+    track.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', e => {
+    if (!drag.active) return;
+    drag.moved = drag.startX - e.clientX;
+    const offset = idx * cardStep() + drag.moved;
+    track.style.transition = 'none';
+    track.style.transform  = `translateX(-${offset}px)`;
+  });
+  window.addEventListener('mouseup', () => {
+    if (!drag.active) return;
+    drag.active = false;
+    track.style.cursor = '';
+    if (drag.moved > 60)       goTo(Math.min(idx + 1, maxIdx()));
+    else if (drag.moved < -60) goTo(Math.max(idx - 1, 0));
+    else                        goTo(idx);
+  });
+
+  /* — mobile: tap to flip card — */
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      if (Math.abs(drag.moved) > 5) return; // ignore if was a drag
+      if (window.innerWidth < 768) card.classList.toggle('flipped');
+    });
+  });
+
+  /* — resize: rebuild dots and re-snap — */
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (idx > maxIdx()) idx = maxIdx();
+      buildDots();
+      setOffset(false);
+    }, 120);
+  });
+
+  /* — init — */
+  buildDots();
+  setOffset(false);
+})();
+</script>
+
+</body>
+</html>
