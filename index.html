@@ -141,16 +141,10 @@
       -webkit-background-clip:text; -webkit-text-fill-color:transparent;
       background-clip:text;
     }
-    .stat-pill {
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
-      border-radius:16px; padding:1.25rem 1.75rem; backdrop-filter:blur(8px);
-    }
-    .stat-num {
-      font-size:2.8rem; font-weight:800;
-      background: linear-gradient(135deg, #f5d7ef, #f3c2ea);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-      background-clip:text;
-    }
+
+    #h-stats img{
+        display: none;
+      }
 
     /* ─── Section labels ─── */
     .sec-label {
@@ -255,7 +249,13 @@
       position:relative;
     }
     @media(min-width:640px){  .tc { width:280px; } }
-    @media(min-width:1024px){ .tc { width:300px; } }
+    @media(min-width:1024px){ 
+      .tc { width:300px; } 
+
+      #h-stats img{
+        display: block;
+      }
+    }
 
     /* Card flip */
     .tc-inner {
@@ -456,26 +456,9 @@
       </div>
 
       <!-- Right — stats grid -->
-      <div id="h-stats" class="reveal grid grid-cols-2 gap-4">
-        <div class="stat-pill col-span-2 text-center">
-          <p class="stat-num" id="counter-pct">0%</p>
-          <p class="text-white/50 text-sm mt-1 font-light">de los niños lo experimenta</p>
-        </div>
-        <div class="stat-pill text-center">
-          <p class="text-3xl font-extrabold text-white">6m–6a</p>
-          <p class="text-white/40 text-xs mt-1">Edad típica</p>
-        </div>
-        <div class="stat-pill text-center">
-          <p class="text-3xl font-extrabold text-white">~60s</p>
-          <p class="text-white/40 text-xs mt-1">Duración máxima</p>
-        </div>
-        <div class="stat-pill col-span-2 flex items-center gap-4">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-               style="background:rgba(243,194,234,.2)">✅</div>
-          <p class="text-white/60 text-sm font-light leading-snug">No causa daño cerebral ni pone en riesgo la vida del niño.</p>
-        </div>
+      <div id="h-stats" class="reveal">
+        <img src="./img/logo.png" alt="Logo" style="height: 450px; width: 450px; padding-left: 1vw;"/>
       </div>
-
     </div>
   </div>
 </section>
@@ -968,7 +951,7 @@
 
 
 <!-- ══════════════════════════════════════
-     JS
+JS
 ══════════════════════════════════════ -->
 <script>
 /* ─── Lenis ──────────────────────────────────── */
