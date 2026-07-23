@@ -248,8 +248,10 @@
     
     @media(min-width:1024px){ 
       .tc { width:300px; } 
+    }
 
-      .LogoHero{display: block;}
+    @media(max-width:1024px){ 
+      #logoHero { display: none; }
     }
 
     /* Card flip */
@@ -451,7 +453,10 @@
       </div>
 
       <!-- Right — stats grid -->
-      <img src="./img/logo.png" alt="Logo" style="height: 450px; width: 450px; padding-left: 1vw; display: none;" class="LogoHero"/>
+      <div id="logoHero" class="reveal flex justify-center items-center" style="animation-delay:.1s">
+        <img src="./img/logo.png" alt="Logo" style="height: 450px; width: 450px; padding-left: 1vw;"/>
+      </div>
+
     </div>
   </div>
 </section>
