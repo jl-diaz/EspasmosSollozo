@@ -142,10 +142,6 @@
       background-clip:text;
     }
 
-    #h-stats img{
-        display: none;
-      }
-
     /* ─── Section labels ─── */
     .sec-label {
       display:inline-block;
@@ -249,12 +245,11 @@
       position:relative;
     }
     @media(min-width:640px){  .tc { width:280px; } }
+    
     @media(min-width:1024px){ 
       .tc { width:300px; } 
 
-      #h-stats img{
-        display: block;
-      }
+      .LogoHero{display: block;}
     }
 
     /* Card flip */
@@ -456,9 +451,7 @@
       </div>
 
       <!-- Right — stats grid -->
-      <div id="h-stats" class="reveal">
-        <img src="./img/logo.png" alt="Logo" style="height: 450px; width: 450px; padding-left: 1vw;"/>
-      </div>
+      <img src="./img/logo.png" alt="Logo" style="height: 450px; width: 450px; padding-left: 1vw; display: none;" class="reveal LogoHero"/>
     </div>
   </div>
 </section>
