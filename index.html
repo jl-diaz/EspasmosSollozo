@@ -261,9 +261,14 @@
       transform-style:preserve-3d;
       transition:transform .55s cubic-bezier(.22,.61,.36,1);
       cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
     }
-    .tc:hover .tc-inner,
-    .tc.flipped .tc-inner { transform:rotateY(180deg); }
+    
+    /* Hover solo para computadoras con mouse real, evitando que se quede pegado en teléfonos */
+    @media (hover: hover) and (pointer: fine) {
+      .tc:hover .tc-inner { transform:rotateY(180deg); }
+    }
+    .tc.flipped .tc-inner { transform:rotateY(180deg) !important; }
 
     .tc-front, .tc-back {
       position:absolute; inset:0;
@@ -273,30 +278,89 @@
       display:flex; flex-direction:column;
       align-items:center; justify-content:center;
       padding:2rem;
+      user-select:none;
+      transform: translateZ(0); /* Aceleración por hardware */
     }
     .tc-front {
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.12);
-      backdrop-filter:blur(8px);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
     }
     .tc-back {
-      transform:rotateY(180deg);
+      transform:rotateY(180deg) translateZ(0);
       border:none;
+    }
+
+    /* ─── Sección Juego Infantil Dulce (Estilo Referencia) ─── */
+    .game-section {
+      background: linear-gradient(180deg, #fdf0fa 0%, #d8ecf8 45%, #bfe2f3 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-title {
+      font-size: clamp(2.3rem, 5.8vw, 4.2rem);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+      text-shadow: 0 4px 0 rgba(79, 140, 180, 0.45), 0 8px 20px rgba(79, 140, 180, 0.2);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Animaciones aceleradas por hardware (GPU) sin repaint continuo */
+    .star-twinkle {
+      animation: starPulse 2.8s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    .star-twinkle-delay {
+      animation: starPulse 2.4s ease-in-out 1.2s infinite alternate;
+      will-change: transform;
+    }
+    @keyframes starPulse {
+      0% { transform: scale(0.9) rotate(-6deg); opacity: 0.9; }
+      100% { transform: scale(1.18) rotate(12deg); opacity: 1; }
+    }
+
+    .rainbow-bounce {
+      animation: rainbowFloat 3.5s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes rainbowFloat {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-7px); }
+    }
+
+    /* Modal de Juego Optimizado para Máximo Rendimiento */
+    #game-modal {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      background-color: rgba(10, 18, 32, 0.88); /* Fondo oscuro limpio sin blur para evitar que la GPU sufra al renderizar el juego */
+    }
+    #game-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #game-modal .modal-box {
+      transform: scale(0.96);
+      transition: transform 0.25s ease-out;
+      will-change: transform;
+      contain: content;
+    }
+    #game-modal.active .modal-box {
+      transform: scale(1);
+    }
+    #genially-iframe {
+      transform: translateZ(0); /* Forzar capa GPU independiente para el juego */
     }
     .tc-avatar {
       width:150px; height:150px; border-radius:50%;
       display:flex; align-items:center; justify-content:center;
       font-size:2.2rem; margin-bottom:1.2rem;
       position:relative;
-    }
-    .tc-avatar::after {
-      content:'';
-      position:absolute; inset:-4px;
-      border-radius:50%; border:2px solid transparent;
-      background:linear-gradient(135deg,#f3c2ea,#c478b8) border-box;
-      -webkit-mask:linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite:destination-out;
-      mask-composite:exclude;
+      border: 3px solid #f3c2ea;
+      box-shadow: 0 0 15px rgba(243, 194, 234, 0.35);
+      background-position: center;
+      background-repeat: no-repeat;
     }
     .tc-role-badge {
       font-size:.7rem; font-weight:600; letter-spacing:.05em;
@@ -385,6 +449,7 @@
       <li><a href="#causas"  class="nav-link">Causas</a></li>
       <li><a href="#signos"  class="nav-link">Signos</a></li>
       <li><a href="#hacer"   class="nav-link">Actuación</a></li>
+      <li><a href="#juego"   class="nav-link">Juego</a></li>
       <li><a href="#equipo"  class="nav-link">Equipo</a></li>
     </ul>
 
@@ -402,6 +467,7 @@
       <a href="#causas"  class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Causas</a>
       <a href="#signos"  class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Signos</a>
       <a href="#hacer"   class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Actuación</a>
+      <a href="#juego"   class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Juego</a>
       <a href="#equipo"  class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Equipo</a>
     </div>
   </div>
@@ -753,6 +819,146 @@
 
 
 <!-- ══════════════════════════════════════
+     SECCIÓN JUEGO DIDÁCTICO (ESTILO BANNER INFANTIL)
+══════════════════════════════════════ -->
+<section id="juego" class="game-section py-20 md:py-28 px-6 md:px-12 text-center relative overflow-hidden">
+  
+  <!-- Olas de fondo suaves orgánicas -->
+  <div class="absolute -top-12 -left-20 w-80 h-80 rounded-full bg-white/30 blur-2xl pointer-events-none"></div>
+  <div class="absolute -bottom-16 -right-20 w-96 h-96 rounded-full bg-violet/10 blur-3xl pointer-events-none"></div>
+
+  <div class="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
+
+    <!-- Elementos superiores: Arcoíris & Estrellas (inspirado fielmente en la imagen) -->
+    <div class="relative flex items-center justify-center w-full max-w-sm mb-3">
+      <!-- Estrella izquierda flotante nítida -->
+      <div class="absolute left-4 sm:left-6 top-3 text-white star-twinkle drop-shadow-[0_2px_6px_rgba(196,120,184,0.5)]">
+        <svg class="w-8 h-8 md:w-9 md:h-9 text-white filter drop-shadow-[0_1px_2px_rgba(15,31,53,0.18)]" fill="#ffffff" viewBox="0 0 24 24">
+          <path d="M12 2l2.6 6.3 6.9.6-5.2 4.6 1.6 6.7L12 16.8 6.1 20.2l1.6-6.7L2.5 8.9l6.9-.6L12 2z"/>
+        </svg>
+      </div>
+
+      <!-- Arcoíris SVG con los colores del proyecto -->
+      <div class="rainbow-bounce mx-auto">
+        <svg class="w-24 h-16 md:w-32 md:h-20" viewBox="0 0 120 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Arco exterior (coral / violeta dulce) -->
+          <path d="M10 70 A 50 50 0 0 1 110 70" stroke="#f47285" stroke-width="12" stroke-linecap="round"/>
+          <!-- Arco medio (amarillo / miel cálido) -->
+          <path d="M24 70 A 36 36 0 0 1 96 70" stroke="#f6c25b" stroke-width="12" stroke-linecap="round"/>
+          <!-- Arco interior (azul celeste del proyecto) -->
+          <path d="M38 70 A 22 22 0 0 1 82 70" stroke="#38b6d8" stroke-width="12" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <!-- Estrella derecha flotante nítida -->
+      <div class="absolute right-4 sm:right-6 top-3 text-white star-twinkle-delay drop-shadow-[0_2px_6px_rgba(196,120,184,0.5)]">
+        <svg class="w-8 h-8 md:w-9 md:h-9 text-white filter drop-shadow-[0_1px_2px_rgba(15,31,53,0.18)]" fill="#ffffff" viewBox="0 0 24 24">
+          <path d="M12 2l2.6 6.3 6.9.6-5.2 4.6 1.6 6.7L12 16.8 6.1 20.2l1.6-6.7L2.5 8.9l6.9-.6L12 2z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Título dulce con sombra volumétrica como la referencia -->
+    <h2 class="game-title leading-tight md:leading-snug mb-3">
+      Pon en práctica tú conocimiento
+    </h2>
+
+    <!-- Icono decorativo central (sobresito / tarjeta con estrella) -->
+    <div class="my-2 transition-transform hover:scale-110 duration-300">
+      <div class="w-12 h-9 rounded-md bg-[#f6c25b] shadow-md flex items-center justify-center text-white relative">
+        <!-- Detalle de sobre -->
+        <svg class="w-5 h-5 drop-shadow" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2l2.4 5.8 6.3.5-4.8 4.2 1.5 6.1-5.4-3.3-5.4 3.3 1.5-6.1-4.8-4.2 6.3-.5L12 2z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Subtítulo inferior -->
+    <p class="text-ink/80 text-base md:text-xl font-medium tracking-wide mb-8 max-w-xl">
+      Juega y diviértete un rato
+    </p>
+
+    <!-- Botón / Caja interactiva (reemplazando el formulario de suscripción) -->
+    <div class="w-full max-w-md">
+      <button id="open-game-btn" type="button"
+              class="w-full group bg-white hover:bg-white/95 text-ink/90 font-medium px-6 py-4 rounded-full shadow-[0_8px_25px_rgba(79,140,180,0.22)] border border-white hover:shadow-[0_12px_32px_rgba(79,140,180,0.32)] transition-all duration-300 flex items-center justify-between cursor-pointer focus:outline-none focus:ring-4 focus:ring-violet/30 active:scale-[0.98]">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-full bg-violet/15 text-violet flex items-center justify-center text-base font-bold">🎮</span>
+          <span class="text-sm md:text-base font-semibold text-ink">Comenzar el juego interactivo</span>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-[#fdf0fa] group-hover:bg-violet group-hover:text-white text-ink/70 flex items-center justify-center transition-colors">
+          <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </div>
+      </button>
+
+      <!-- Enlace alternativo discreto y accesible -->
+      <div class="mt-3 text-center">
+        <a href="https://view.genially.com/6a89f209cf407e0be64534a6" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-1.5 text-xs text-ink/60 hover:text-ink font-medium underline underline-offset-2 transition-colors">
+          <span>O abrir juego en pestaña nueva</span>
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MODAL DEL JUEGO GENIALLY (100% RESPONSIVE) -->
+<div id="game-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  
+  <div class="modal-box w-full max-w-5xl bg-[#0f1f35] rounded-2xl md:rounded-3xl shadow-2xl border border-white/10 flex flex-col overflow-hidden max-h-[94vh]">
+    
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between px-4 md:px-6 py-3.5 border-b border-white/10 bg-[#162740]">
+      <div class="flex items-center gap-2.5">
+        <div>
+          <h3 id="modal-title" class="text-white font-bold text-sm md:text-base leading-none">Desafío: Espasmos del Sollozo</h3>
+          <p class="text-white/50 text-xs mt-0.5">Pon a prueba lo aprendido de forma interactiva</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <a href="https://view.genially.com/6a89f209cf407e0be64534a6" target="_blank" rel="noopener noreferrer"
+           class="hidden sm:inline-flex items-center gap-1 text-xs text-white/70 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition-colors" title="Abrir en ventana completa">
+          <span>Pantalla completa</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+        </a>
+        <button id="close-game-btn" type="button"
+                class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors text-lg focus:outline-none focus:ring-2 focus:ring-fuchsia"
+                aria-label="Cerrar modal de juego">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Body con iframe responsivo -->
+    <div class="relative w-full flex-1 bg-[#091322] flex items-center justify-center overflow-hidden" style="min-height: 380px;">
+      <div id="game-loader" class="absolute inset-0 flex flex-col items-center justify-center bg-[#091322] text-white/60 z-10 transition-opacity duration-300 pointer-events-none">
+        <div class="w-10 h-10 border-4 border-violet/30 border-t-violet rounded-full animate-spin mb-3"></div>
+        <p class="text-xs font-medium tracking-wide">Cargando juego interactivo...</p>
+      </div>
+      
+      <!-- El iframe solo cargará el src al abrir el modal para máximo rendimiento -->
+      <iframe id="genially-iframe"
+              data-src="https://view.genially.com/6a89f209cf407e0be64534a6"
+              src=""
+              class="w-full h-full border-0 aspect-[16/9] md:aspect-video min-h-[360px] md:min-h-[520px]"
+              allowfullscreen="true"
+              loading="eager"
+              webkitallowfullscreen="true"
+              mozallowfullscreen="true"
+              allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture">
+      </iframe>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
      EQUIPO — CAROUSEL ROBUSTO
 ══════════════════════════════════════ -->
 <section id="equipo" class="carousel-section py-28 px-6 md:px-12">
@@ -790,10 +996,10 @@
                 <span class="tc-role-badge" style="background:rgba(243,194,234,.2);color:#f5d7ef">3° Año G</span>
               </div>
               <div class="tc-back" style="background:linear-gradient(135deg,#3d1535,#c478b8)">
-                <span class="text-5xl mb-5">❤️‍🩹</span>
+                <span class="text-5xl mb-3">❤️‍🩹</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Ariana Sibrian</h4>
-                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+                <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -808,10 +1014,10 @@
                 <span class="tc-role-badge" style="background:rgba(196,120,184,.2);color:#f5d7ef">3° Año G</span>
               </div>
               <div class="tc-back" style="background:linear-gradient(135deg,#5a1a50,#f3c2ea)">
-                <span class="text-5xl mb-5">🔬</span>
+                <span class="text-5xl mb-3">🔬</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Ashley Rodríguez</h4>
-                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+                <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -826,10 +1032,10 @@
                 <span class="tc-role-badge" style="background:rgba(243,194,234,.2);color:#f5d7ef">3° Año G</span>
               </div>
               <div class="tc-back" style="background:linear-gradient(135deg,#5a1a50,#f3c2ea)">
-                <span class="text-5xl mb-5">💊</span>
+                <span class="text-5xl mb-3">💊</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Camila Chacón</h4>
-                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+                <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -844,10 +1050,10 @@
                 <span class="tc-role-badge" style="background:rgba(243,194,234,.2);color:#f5d7ef">3° Año G</span>
               </div>
               <div class="tc-back" style="background:linear-gradient(135deg,#2a0a26,#c478b8)">
-                <span class="text-5xl mb-5">🏥</span>
+                <span class="text-5xl mb-3">🏥</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Gabriela Recinos</h4>
-                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+                <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -862,10 +1068,10 @@
                 <span class="tc-role-badge" style="background:rgba(243,194,234,.2);color:#f5d7ef">3° Año G</span>
               </div>
               <div class="tc-back" style="background:linear-gradient(135deg,#5a1a50,#f3c2ea)">
-                <span class="text-5xl mb-5">🩺</span>
+                <span class="text-5xl mb-3">🩺</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Nicole Martínez</h4>
-                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+                <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -880,10 +1086,10 @@
                 <span class="tc-role-badge" style="background:rgba(243,194,234,.2);color:#f5d7ef">3° Año G</span>
               </div>
               <div class="tc-back" style="background:linear-gradient(135deg,#5a1a50,#f3c2ea)">
-                <span class="text-5xl mb-5">💉</span>
+                <span class="text-5xl mb-3">💉</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Yeimy Duarte</h4>
-                <p class="text-white/70 text-xs mb-4">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2">"-."</p>
+                <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
+                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -922,6 +1128,7 @@
           <li><a href="#causas" class="hover:text-sky-300 transition-colors">¿Por qué ocurre?</a></li>
           <li><a href="#signos" class="hover:text-sky-300 transition-colors">Signos y síntomas</a></li>
           <li><a href="#hacer"  class="hover:text-sky-300 transition-colors">Qué hacer / No hacer</a></li>
+          <li><a href="#juego"  class="hover:text-sky-300 transition-colors">Juego interactivo</a></li>
           <li><a href="#equipo" class="hover:text-sky-300 transition-colors">Equipo</a></li>
         </ul>
       </div>
@@ -952,16 +1159,26 @@
 JS
 ══════════════════════════════════════ -->
 <script>
-/* ─── Lenis ──────────────────────────────────── */
+/* ─── Lenis Smooth Scroll (Configuración Mantequilla Ultrasedosa) ─ */
 const lenis = new Lenis({
-  duration: 1.35,
+  duration: 1.15,
   easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  smoothTouch: false,
+  smoothWheel: true,
+  wheelMultiplier: 1,
+  touchMultiplier: 1.5,
+  infinite: false,
 });
 gsap.registerPlugin(ScrollTrigger);
 lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add(t => lenis.raf(t * 1000));
+gsap.ticker.add(time => {
+  lenis.raf(time * 1000);
+});
 gsap.ticker.lagSmoothing(0);
+
+// Forzar refresco de posiciones para garantizar sincronía perfecta
+window.addEventListener('load', () => {
+  ScrollTrigger.refresh();
+});
 
 /* ─── Progress bar ───────────────────────────── */
 lenis.on('scroll', ({ scroll, limit }) => {
@@ -1106,25 +1323,34 @@ ScrollTrigger.create({
   btnPrev.addEventListener('click', () => goTo(idx <= 0 ? maxIdx() : idx - 1));
 
   /* — touch — */
+  let touchStartTime = 0;
   viewport.addEventListener('touchstart', e => {
-    drag = { active: true, startX: e.touches[0].clientX, moved: 0 };
+    touchStartTime = Date.now();
+    drag = { active: true, startX: e.touches[0].clientX, startY: e.touches[0].clientY, moved: 0 };
   }, { passive: true });
 
   viewport.addEventListener('touchmove', e => {
     if (!drag.active) return;
     drag.moved = drag.startX - e.touches[0].clientX;
-    // live preview while dragging
-    const offset = idx * cardStep() + drag.moved;
-    track.style.transition = 'none';
-    track.style.transform  = `translateX(-${offset}px)`;
+    // live preview while dragging si el desplazamiento es intencional
+    if (Math.abs(drag.moved) > 8) {
+      const offset = idx * cardStep() + drag.moved;
+      track.style.transition = 'none';
+      track.style.transform  = `translateX(-${offset}px)`;
+    }
   }, { passive: true });
 
   viewport.addEventListener('touchend', () => {
     if (!drag.active) return;
     drag.active = false;
-    if (drag.moved > 60)       goTo(Math.min(idx + 1, maxIdx()));
-    else if (drag.moved < -60) goTo(Math.max(idx - 1, 0));
-    else                        goTo(idx); // snap back
+    const movedDistance = drag.moved;
+    
+    // Limpiar inmediatamente el flag moved después de un pequeño respiro para el click
+    setTimeout(() => { drag.moved = 0; }, 80);
+
+    if (movedDistance > 55)       goTo(Math.min(idx + 1, maxIdx()));
+    else if (movedDistance < -55) goTo(Math.max(idx - 1, 0));
+    else if (Math.abs(movedDistance) > 8) goTo(idx); // snap back
   });
 
   /* — mouse drag — */
@@ -1144,16 +1370,23 @@ ScrollTrigger.create({
     if (!drag.active) return;
     drag.active = false;
     track.style.cursor = '';
-    if (drag.moved > 60)       goTo(Math.min(idx + 1, maxIdx()));
-    else if (drag.moved < -60) goTo(Math.max(idx - 1, 0));
+    const movedDistance = drag.moved;
+    setTimeout(() => { drag.moved = 0; }, 80);
+    if (movedDistance > 60)       goTo(Math.min(idx + 1, maxIdx()));
+    else if (movedDistance < -60) goTo(Math.max(idx - 1, 0));
     else                        goTo(idx);
   });
 
-  /* — mobile: tap to flip card — */
+  /* — mobile & tablet: tap to flip card (vuelta y vuelta fluida) — */
   cards.forEach(card => {
-    card.addEventListener('click', () => {
-      if (Math.abs(drag.moved) > 5) return; // ignore if was a drag
-      if (window.innerWidth < 768) card.classList.toggle('flipped');
+    card.addEventListener('pointerup', e => {
+      // Ignorar si hubo desplazamiento real de arrastre
+      if (Math.abs(drag.moved) > 10) return;
+      
+      // Permitir voltear con tap en dispositivos táctiles / anchos pequeños
+      if (window.innerWidth < 1024) {
+        card.classList.toggle('flipped');
+      }
     });
   });
 
@@ -1171,6 +1404,54 @@ ScrollTrigger.create({
   /* — init — */
   buildDots();
   setOffset(false);
+})();
+
+/* ══════════════════════════════════════════════
+   MODAL DE JUEGO INTERACTIVO (GENIALLY)
+══════════════════════════════════════════════ */
+(function initGameModal() {
+  const modal       = document.getElementById('game-modal');
+  const openBtn     = document.getElementById('open-game-btn');
+  const closeBtn    = document.getElementById('close-game-btn');
+  const iframe      = document.getElementById('genially-iframe');
+  const loader      = document.getElementById('game-loader');
+
+  if (!modal || !openBtn || !closeBtn || !iframe) return;
+
+  function openModal() {
+    // Cargar iframe de forma lazy solo cuando el usuario lo pide
+    if (!iframe.getAttribute('src')) {
+      iframe.src = iframe.getAttribute('data-src');
+      iframe.onload = () => {
+        if (loader) loader.style.opacity = '0';
+        setTimeout(() => { if (loader) loader.style.display = 'none'; }, 300);
+      };
+    }
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+    if (typeof lenis !== 'undefined' && lenis) lenis.stop();
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    if (typeof lenis !== 'undefined' && lenis) lenis.start();
+  }
+
+  openBtn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+
+  // Cerrar al hacer clic en el backdrop oscuro
+  modal.addEventListener('click', e => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Cerrar con tecla Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeModal();
+    }
+  });
 })();
 </script>
 
