@@ -81,7 +81,7 @@
 
     /* ─── Navbar ─── */
     #navbar {
-      transition: background .4s, box-shadow .4s, backdrop-filter .4s;
+      transition: background .4s, box-shadow .4s, backdrop-filter .4s, border-radius .3s ease;
     }
     #navbar span{
       transition: background .4s, box-shadow .4s, backdrop-filter .4s;
@@ -95,10 +95,24 @@
     #navbar.scrolled {
       background: rgba(253,240,250,.95);
       backdrop-filter: blur(16px);
-      box-shadow: 0 2px 32px rgba(196,120,184,.15);
+      box-shadow: 0 4px 30px rgba(196,120,184,.15);
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
     }
 
     #navbar.scrolled span{
+      color: var(--ink);
+    }
+
+    #navbar.menu-open {
+      background: rgba(253,240,250,.98);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 10px 40px rgba(196,120,184,.22);
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
+    }
+
+    #navbar.menu-open span {
       color: var(--ink);
     }
 
@@ -419,6 +433,25 @@
       clip-path:polygon(0 0,100% 100%,100% 100%,0 100%);
     }
 
+    /* ─── Botón Oficial de YouTube Pulse ─── */
+    .video-play-pulse {
+      animation: ytGlowPulse 2.5s ease-in-out infinite;
+      transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), filter 0.35s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @keyframes ytGlowPulse {
+      0% { filter: drop-shadow(0 4px 10px rgba(255, 0, 0, 0.45)); transform: scale(1); }
+      50% { filter: drop-shadow(0 6px 24px rgba(255, 0, 0, 0.85)); transform: scale(1.05); }
+      100% { filter: drop-shadow(0 4px 10px rgba(255, 0, 0, 0.45)); transform: scale(1); }
+    }
+    .group:hover .video-play-pulse {
+      animation: none;
+      filter: drop-shadow(0 8px 30px rgba(255, 0, 0, 0.95));
+      transform: scale(1.12);
+    }
+
     /* custom scrollbar */
     ::-webkit-scrollbar{ width:6px; }
     ::-webkit-scrollbar-track{ background:transparent; }
@@ -449,6 +482,7 @@
       <li><a href="#causas"  class="nav-link">Causas</a></li>
       <li><a href="#signos"  class="nav-link">Signos</a></li>
       <li><a href="#hacer"   class="nav-link">Actuación</a></li>
+      <li><a href="#video"   class="nav-link">Video</a></li>
       <li><a href="#juego"   class="nav-link">Juego</a></li>
       <li><a href="#equipo"  class="nav-link">Equipo</a></li>
     </ul>
@@ -460,13 +494,14 @@
     </button>
   </div>
 
-  <div id="mobile-menu" class="md:hidden mt-2 mx-0 rounded-2xl overflow-hidden"
+  <div id="mobile-menu" class="md:hidden mt-2 mx-0 rounded-3xl overflow-hidden shadow-lg border border-violet/20"
        style="background:rgba(245,215,239,.97);backdrop-filter:blur(16px);">
     <div class="divide-y divide-violet/10">
       <a href="#que-es"  class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">¿Qué es?</a>
       <a href="#causas"  class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Causas</a>
       <a href="#signos"  class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Signos</a>
       <a href="#hacer"   class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Actuación</a>
+      <a href="#video"   class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Guía en Video</a>
       <a href="#juego"   class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Juego</a>
       <a href="#equipo"  class="block px-6 py-4 text-sm font-medium text-ink hover:text-violet transition-colors" onclick="closeMob()">Equipo</a>
     </div>
@@ -493,11 +528,6 @@
 
       <!-- Left -->
       <div>
-        <div id="h-tag" class="reveal hero-tag mb-7">
-          <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#f3c2ea"></span>
-          Información Médica Pediátrica
-        </div>
-
         <h1 id="h-title" class="reveal big-title mb-7">
           Espasmos<br/>
           <span class="accent">del Sollozo</span>
@@ -512,7 +542,7 @@
              style="background:linear-gradient(135deg,#c478b8,#f3c2ea);box-shadow:0 8px 24px rgba(196,120,184,.45)">
             Explorar ↓
           </a>
-          <a href="#hacer" class="px-7 py-3.5 rounded-full font-semibold text-sm border border-white/20 text-white hover:border-fuchsia hover:text-fuchsia transition-colors" style="--tw-hover-text-opacity:1">
+          <a href="#video" class="px-7 py-3.5 rounded-full font-semibold text-sm border border-white/20 text-white hover:border-fuchsia hover:text-fuchsia transition-colors" style="--tw-hover-text-opacity:1">
             ¿Qué hago?
           </a>
         </div>
@@ -819,6 +849,78 @@
 
 
 <!-- ══════════════════════════════════════
+     GUÍA EN VIDEO (THEATER SHOWCASE)
+══════════════════════════════════════ -->
+<section id="video" class="py-24 md:py-32 px-6 md:px-12 bg-white relative overflow-hidden">
+
+  <div class="max-w-5xl mx-auto relative z-10">
+
+    <!-- Encabezado de la sección -->
+    <div class="text-center mb-12 reveal">
+      <span class="sec-label">Demostración Audiovisual</span>
+      <h2 class="sec-title">Guía Práctica en Video</h2>
+      <div class="underline-accent mx-auto mb-5"></div>
+      <p class="text-ink/60 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
+        Observa una explicación visual clara y tranquilizadora sobre las recomendaciones esenciales y el manejo adecuado de un episodio.
+      </p>
+    </div>
+
+    <!-- Video Card Central (The Hero Element) -->
+    <div class="max-w-4xl mx-auto reveal">
+      <a href="https://www.youtube.com/watch?v=zy73ZHkbOBA"
+         target="_blank"
+         rel="noopener noreferrer"
+         class="group block relative w-full aspect-video rounded-3xl overflow-hidden bg-ink shadow-[0_15px_50px_rgba(15,31,53,0.18)] hover:shadow-[0_22px_65px_rgba(196,120,184,0.32)] border-2 sm:border-4 border-white transition-all duration-500 hover:-translate-y-2 focus:outline-none focus:ring-4 focus:ring-violet/40 cursor-pointer"
+         aria-label="Reproducir Guía para tratar un Espasmo Del Sollozo en YouTube">
+
+        <!-- Miniatura de YouTube escalada para eliminar franjas negras 4:3 -->
+        <div class="absolute inset-0 overflow-hidden">
+          <img src="https://img.youtube.com/vi/zy73ZHkbOBA/hqdefault.jpg"
+               alt="Guía para tratar un Espasmo Del Sollozo"
+               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.42]"
+               style="transform: scale(1.35); transform-origin: center;"
+               loading="lazy" />
+        </div>
+
+        <!-- Capa degradada cinematográfica para contraste y profundidad -->
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-black/35 group-hover:via-ink/10 transition-all duration-300"></div>
+
+        <!-- Botón Oficial de YouTube (Play Squircle Auténtico) -->
+        <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+          <div class="video-play-pulse">
+            <svg class="w-20 h-14 sm:w-24 sm:h-17 transition-transform duration-300" viewBox="0 0 68 48" aria-hidden="true">
+              <path class="fill-[#ff0000] group-hover:fill-[#cc0000] transition-colors" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,0.13,34,0,34,0S12.21,0.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z"></path>
+              <path d="M 45,24 27,14 27,34" fill="#ffffff"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Barra inferior del reproductor con información y llamada a la acción -->
+        <div class="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex items-center justify-between text-white z-10">
+          <div class="truncate pr-4">
+            <h3 class="text-sm sm:text-lg font-bold truncate drop-shadow-md">
+              Guía para tratar un Espasmo Del Sollozo
+            </h3>
+            <p class="text-white/75 text-xs sm:text-sm font-medium hidden sm:block drop-shadow">
+              Breath Holding • Proyecto Crea J ATPS
+            </p>
+          </div>
+          <span class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold bg-white/20 hover:bg-white/30 backdrop-blur-md px-3.5 py-2 rounded-full flex-shrink-0 transition-colors shadow">
+            <span>Abrir en YouTube</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </span>
+        </div>
+      </a>
+      <p class="text-center text-xs text-ink/45 mt-3">
+        Canal Oficial: <strong class="text-ink/65">Breath Holding</strong> • Se abrirá en una nueva pestaña
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
      SECCIÓN JUEGO DIDÁCTICO (ESTILO BANNER INFANTIL)
 ══════════════════════════════════════ -->
 <section id="juego" class="game-section py-20 md:py-28 px-6 md:px-12 text-center relative overflow-hidden">
@@ -999,7 +1101,6 @@
                 <span class="text-5xl mb-3">❤️‍🩹</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Ariana Sibrian</h4>
                 <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -1017,7 +1118,6 @@
                 <span class="text-5xl mb-3">🔬</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Ashley Rodríguez</h4>
                 <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -1035,7 +1135,6 @@
                 <span class="text-5xl mb-3">💊</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Camila Chacón</h4>
                 <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -1053,7 +1152,6 @@
                 <span class="text-5xl mb-3">🏥</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Gabriela Recinos</h4>
                 <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -1071,7 +1169,6 @@
                 <span class="text-5xl mb-3">🩺</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Nicole Martínez</h4>
                 <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -1089,7 +1186,6 @@
                 <span class="text-5xl mb-3">💉</span>
                 <h4 class="font-bold text-white text-xl mb-1 text-center">Yeimy Duarte</h4>
                 <p class="text-white/70 text-xs mb-3">Colegio Don Bosco · 3° Año ATPS.</p>
-                <p class="text-white/80 text-xs text-center italic leading-relaxed px-2 mb-4">"-."</p>
               </div>
             </div>
           </div>
@@ -1128,6 +1224,7 @@
           <li><a href="#causas" class="hover:text-sky-300 transition-colors">¿Por qué ocurre?</a></li>
           <li><a href="#signos" class="hover:text-sky-300 transition-colors">Signos y síntomas</a></li>
           <li><a href="#hacer"  class="hover:text-sky-300 transition-colors">Qué hacer / No hacer</a></li>
+          <li><a href="#video"  class="hover:text-sky-300 transition-colors">Guía en Video</a></li>
           <li><a href="#juego"  class="hover:text-sky-300 transition-colors">Juego interactivo</a></li>
           <li><a href="#equipo" class="hover:text-sky-300 transition-colors">Equipo</a></li>
         </ul>
@@ -1192,13 +1289,17 @@ lenis.on('scroll', ({ scroll }) => {
 
 /* ─── Hamburger ──────────────────────────────── */
 let mobOpen = false;
+const navbarEl = document.getElementById('navbar');
+const mobileMenuEl = document.getElementById('mobile-menu');
 document.getElementById('ham-btn').addEventListener('click', () => {
   mobOpen = !mobOpen;
-  document.getElementById('mobile-menu').classList.toggle('open', mobOpen);
+  mobileMenuEl.classList.toggle('open', mobOpen);
+  navbarEl.classList.toggle('menu-open', mobOpen);
 });
 function closeMob() {
   mobOpen = false;
-  document.getElementById('mobile-menu').classList.remove('open');
+  mobileMenuEl.classList.remove('open');
+  navbarEl.classList.remove('menu-open');
 }
 
 /* ─── Smooth anchor links ────────────────────── */
