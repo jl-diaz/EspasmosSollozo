@@ -433,23 +433,223 @@
       clip-path:polygon(0 0,100% 100%,100% 100%,0 100%);
     }
 
-    /* ─── Botón Oficial de YouTube Pulse ─── */
-    .video-play-pulse {
-      animation: ytGlowPulse 2.5s ease-in-out infinite;
-      transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), filter 0.35s;
-      display: inline-flex;
+    /* ═════════════════════════════════════════════════════════
+       LAPTOP MOCKUP HIPERREALISTA (MACBOOK PRO)
+       ═════════════════════════════════════════════════════════ */
+    .laptop-stage {
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* 1. Tapa exterior de aluminio plateado */
+    .mac-outer-lid {
+      position: relative;
+      background: linear-gradient(180deg, #d4d9e2 0%, #b8c0cc 100%);
+      padding: 2px 2px 0 2px;
+      border-radius: 18px 18px 0 0;
+      box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+      margin-bottom: 0;
+    }
+    @media (min-width: 640px) {
+      .mac-outer-lid {
+        padding: 2.5px 2.5px 0 2.5px;
+        border-radius: 22px 22px 0 0;
+      }
+    }
+    @media (min-width: 1024px) {
+      .mac-outer-lid {
+        padding: 3px 3px 0 3px;
+        border-radius: 24px 24px 0 0;
+      }
+    }
+
+    /* Bisel negro interior de cristal */
+    .mac-bezel {
+      position: relative;
+      background: #090c12;
+      border: 7px solid #090c12;
+      border-bottom: 6px solid #090c12;
+      border-radius: 16px 16px 0 0;
+      overflow: hidden;
+    }
+    @media (min-width: 640px) {
+      .mac-bezel {
+        border-width: 10px;
+        border-bottom-width: 8px;
+        border-radius: 20px 20px 0 0;
+      }
+    }
+    @media (min-width: 1024px) {
+      .mac-bezel {
+        border-width: 12px;
+        border-bottom-width: 10px;
+        border-radius: 21px 21px 0 0;
+      }
+    }
+
+    /* 2. Notch de cámara con lente reflectante y sensor */
+    .mac-camera-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: clamp(48px, 8vw, 68px);
+      height: clamp(8px, 1.3vw, 12px);
+      background: #090c12;
+      border-radius: 0 0 7px 7px;
+      z-index: 50;
+      display: flex;
       align-items: center;
       justify-content: center;
+      gap: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+    .mac-lens {
+      width: 4px;
+      height: 4px;
+      background: radial-gradient(circle, #38bdf8 15%, #050811 75%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+    }
+    .mac-sensor {
+      width: 2px;
+      height: 2px;
+      background: rgba(16, 185, 129, 0.4);
+      border-radius: 50%;
+    }
+
+    /* 3. Pantalla activa de la laptop (16:10) */
+    .mac-display {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #0f1f35;
+      overflow: hidden;
+      display: block;
+      text-decoration: none;
+      user-select: none;
+      cursor: pointer;
+    }
+    .screen-sheen {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.03) 35%, transparent 60%);
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    /* 4. Base de aluminio unibody (contacto directo hermético con la tapa) */
+    .mac-base-wrap {
+      position: relative;
+      width: 105%;
+      left: -2.5%;
+      margin-top: -2px;
+      z-index: 20;
+    }
+    /* Barrita blanca iluminada continua a todo lo ancho (Idéntica a la referencia del usuario) */
+    .mac-base-top {
+      position: relative;
+      height: clamp(3px, 0.45vw, 4px);
+      background: linear-gradient(90deg, 
+        rgba(235, 241, 248, 0.92) 0%, 
+        #ffffff 10%, 
+        #ffffff 50%, 
+        #ffffff 90%, 
+        rgba(235, 241, 248, 0.92) 100%
+      );
+      border-radius: 2px 2px 0 0;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.95), 0 1px 2px rgba(255, 255, 255, 0.9), inset 0 1px 1px #ffffff;
+    }
+    /* Frente del chasis con curvatura y acabado de aluminio pulido */
+    .mac-base-front {
+      position: relative;
+      height: clamp(10px, 1.8vw, 15px);
+      background: linear-gradient(180deg, #d4dce7 0%, #bcc7d6 30%, #9eacc0 72%, #75869c 100%);
+      border-radius: 0 0 clamp(8px, 1.5vw, 12px) clamp(8px, 1.5vw, 12px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.28), inset 0 1px 2px rgba(255, 255, 255, 0.95), inset 0 -1px 2px rgba(0, 0, 0, 0.35);
+      border-top: 1px solid #ffffff;
+    }
+    /* Muesca central para el pulgar iluminada con bisel nítido (Fiel a la foto del usuario) */
+    .mac-thumb-notch {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: clamp(54px, 9.5vw, 82px);
+      height: clamp(4px, 0.65vw, 6px);
+      background: linear-gradient(180deg, 
+        #ffffff 0%, 
+        #f8fafc 35%, 
+        #dce5ee 75%, 
+        #b9c6d4 100%
+      );
+      border-radius: 0 0 clamp(4px, 0.6vw, 6px) clamp(4px, 0.6vw, 6px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.22), 0 0 8px rgba(255, 255, 255, 0.85), inset 0 1px 2px #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-top: none;
+    }
+    .mac-thumb-notch::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 6%;
+      right: 6%;
+      height: 1.5px;
+      background: #ffffff;
+      border-radius: 1px;
+      box-shadow: 0 0 4px #ffffff;
+    }
+    .mac-foot-left, .mac-foot-right {
+      position: absolute;
+      bottom: -2px;
+      width: clamp(12px, 2vw, 18px);
+      height: 3px;
+      background: #1e293b;
+      border-radius: 0 0 3px 3px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+    .mac-foot-left { left: 6%; }
+    .mac-foot-right { right: 6%; }
+
+    /* 5. Doble sombra realista de apoyo */
+    .mac-contact-shadow {
+      position: relative;
+      width: 90%;
+      height: 4px;
+      margin: 0 auto;
+      background: rgba(15, 23, 42, 0.45);
+      filter: blur(2px);
+      border-radius: 50%;
+    }
+    .mac-ambient-shadow {
+      position: relative;
+      width: 96%;
+      height: clamp(16px, 3vw, 24px);
+      margin: -2px auto 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(15, 31, 53, 0.38) 0%, rgba(15, 31, 53, 0.1) 50%, transparent 75%);
+      filter: blur(5px);
+    }
+
+    /* ─── Botón Oficial de YouTube con Pulso ─── */
+    .yt-pulse {
+      animation: ytGlowPulse 2.5s ease-in-out infinite;
+      transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), filter 0.3s;
     }
     @keyframes ytGlowPulse {
-      0% { filter: drop-shadow(0 4px 10px rgba(255, 0, 0, 0.45)); transform: scale(1); }
-      50% { filter: drop-shadow(0 6px 24px rgba(255, 0, 0, 0.85)); transform: scale(1.05); }
-      100% { filter: drop-shadow(0 4px 10px rgba(255, 0, 0, 0.45)); transform: scale(1); }
+      0% { filter: drop-shadow(0 4px 10px rgba(255, 0, 0, 0.5)); transform: scale(1); }
+      50% { filter: drop-shadow(0 8px 24px rgba(255, 0, 0, 0.85)); transform: scale(1.05); }
+      100% { filter: drop-shadow(0 4px 10px rgba(255, 0, 0, 0.5)); transform: scale(1); }
     }
-    .group:hover .video-play-pulse {
+    .mac-display:hover .yt-pulse {
       animation: none;
       filter: drop-shadow(0 8px 30px rgba(255, 0, 0, 0.95));
       transform: scale(1.12);
+    }
+    .laptop-stage:hover .mac-outer-lid {
+      box-shadow: 0 -4px 20px rgba(196, 120, 184, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+      transform: none; /* Fijo, sin levantar la pantalla */
     }
 
     /* custom scrollbar */
@@ -865,55 +1065,99 @@
       </p>
     </div>
 
-    <!-- Video Card Central (The Hero Element) -->
-    <div class="max-w-4xl mx-auto reveal">
-      <a href="https://www.youtube.com/watch?v=zy73ZHkbOBA"
-         target="_blank"
-         rel="noopener noreferrer"
-         class="group block relative w-full aspect-video rounded-3xl overflow-hidden bg-ink shadow-[0_15px_50px_rgba(15,31,53,0.18)] hover:shadow-[0_22px_65px_rgba(196,120,184,0.32)] border-2 sm:border-4 border-white transition-all duration-500 hover:-translate-y-2 focus:outline-none focus:ring-4 focus:ring-violet/40 cursor-pointer"
-         aria-label="Reproducir Guía para tratar un Espasmo Del Sollozo en YouTube">
+    <!-- MOCKUP DE LAPTOP MACBOOK PRO REALISTA -->
+    <div class="laptop-stage reveal">
+      
+      <!-- 1. Tapa exterior de aluminio plateado -->
+      <div class="mac-outer-lid">
+        
+        <!-- 2. Bisel de cristal negro -->
+        <div class="mac-bezel">
 
-        <!-- Miniatura de YouTube escalada para eliminar franjas negras 4:3 -->
-        <div class="absolute inset-0 overflow-hidden">
-          <img src="https://img.youtube.com/vi/zy73ZHkbOBA/hqdefault.jpg"
-               alt="Guía para tratar un Espasmo Del Sollozo"
-               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.42]"
-               style="transform: scale(1.35); transform-origin: center;"
-               loading="lazy" />
-        </div>
-
-        <!-- Capa degradada cinematográfica para contraste y profundidad -->
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-black/35 group-hover:via-ink/10 transition-all duration-300"></div>
-
-        <!-- Botón Oficial de YouTube (Play Squircle Auténtico) -->
-        <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-          <div class="video-play-pulse">
-            <svg class="w-20 h-14 sm:w-24 sm:h-17 transition-transform duration-300" viewBox="0 0 68 48" aria-hidden="true">
-              <path class="fill-[#ff0000] group-hover:fill-[#cc0000] transition-colors" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,0.13,34,0,34,0S12.21,0.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z"></path>
-              <path d="M 45,24 27,14 27,34" fill="#ffffff"></path>
-            </svg>
+          <!-- 3. Notch de cámara con lente reflectante y sensor -->
+          <div class="mac-camera-notch">
+            <div class="mac-lens"></div>
+            <div class="mac-sensor"></div>
           </div>
-        </div>
 
-        <!-- Barra inferior del reproductor con información y llamada a la acción -->
-        <div class="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex items-center justify-between text-white z-10">
-          <div class="truncate pr-4">
-            <h3 class="text-sm sm:text-lg font-bold truncate drop-shadow-md">
-              Guía para tratar un Espasmo Del Sollozo
-            </h3>
-            <p class="text-white/75 text-xs sm:text-sm font-medium hidden sm:block drop-shadow">
-              Breath Holding • Proyecto Crea J ATPS
-            </p>
-          </div>
-          <span class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold bg-white/20 hover:bg-white/30 backdrop-blur-md px-3.5 py-2 rounded-full flex-shrink-0 transition-colors shadow">
-            <span>Abrir en YouTube</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          </span>
+          <!-- 4. Pantalla Activa: Card de video de Image 1 -->
+          <a href="https://www.youtube.com/watch?v=zy73ZHkbOBA"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="mac-display"
+             aria-label="Reproducir Guía para tratar un Espasmo Del Sollozo en YouTube">
+
+            <!-- Brillo de cristal de pantalla diagonal -->
+            <div class="screen-sheen"></div>
+
+            <!-- Miniatura sin barras negras de los ositos -->
+            <div style="position:absolute; inset:0; overflow:hidden;">
+              <img src="https://img.youtube.com/vi/zy73ZHkbOBA/hqdefault.jpg"
+                   alt="Guía para tratar un Espasmo Del Sollozo"
+                   style="width:100%; height:100%; object-fit:cover; transform:scale(1.35); transform-origin:center;"
+                   loading="lazy" />
+            </div>
+
+            <!-- Capa degradada cinematográfica inferior -->
+            <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(15,31,53,.88) 0%, rgba(15,31,53,.15) 45%, rgba(0,0,0,.2) 100%);"></div>
+
+            <!-- Botón Oficial de YouTube con Pulso en el Centro -->
+            <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:30; pointer-events:none;">
+              <div class="yt-pulse">
+                <svg style="width: clamp(52px, 8vw, 76px); height: clamp(36px, 5.5vw, 52px);" viewBox="0 0 68 48" aria-hidden="true">
+                  <path fill="#ff0000" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,0.13,34,0,34,0S12.21,0.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z"></path>
+                  <path fill="#ffffff" d="M 45,24 27,14 27,34"></path>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Barra Inferior de la Pantalla (Idéntica a Image 1) -->
+            <div style="position:absolute; bottom: clamp(8px, 1.8vw, 16px); left: clamp(10px, 2.5vw, 20px); right: clamp(10px, 2.5vw, 20px); display:flex; justify-content:space-between; align-items:center; color:#fff; z-index:30;">
+              
+              <!-- Título y autor -->
+              <div style="text-align:left; overflow:hidden; padding-right:10px;">
+                <h3 style="font-size: clamp(11px, 2vw, 15px); font-weight:700; text-shadow:0 1px 3px rgba(0,0,0,.9); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px;">
+                  Guía para tratar un Espasmo Del Sollozo
+                </h3>
+                <p style="font-size: clamp(9px, 1.4vw, 12px); color:rgba(255,255,255,.8); text-shadow:0 1px 2px rgba(0,0,0,.8); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                  Breath Holding • Proyecto Crea J ATPS
+                </p>
+              </div>
+
+              <!-- Botón pill Abrir en YouTube -->
+              <span style="font-size: clamp(10px, 1.5vw, 12px); font-weight:600; background:rgba(255,255,255,.2); backdrop-filter:blur(8px); padding: clamp(4px, 1vw, 7px) clamp(10px, 1.8vw, 16px); border-radius:999px; white-space:nowrap; flex-shrink:0; display:inline-flex; align-items:center; gap:5px; transition:background .2s; border:1px solid rgba(255,255,255,0.25);">
+                <span>Abrir en YouTube</span>
+                <svg style="width:12px; height:12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </span>
+
+            </div>
+
+          </a>
         </div>
-      </a>
-      <p class="text-center text-xs text-ink/45 mt-3">
-        Canal Oficial: <strong class="text-ink/65">Breath Holding</strong> • Se abrirá en una nueva pestaña
-      </p>
+      </div>
+
+      <!-- 2. Chasis base de aluminio con biseles y hendidura (0px gap hermético) -->
+      <div class="mac-base-wrap">
+        <div class="mac-base-top"></div>
+        <div class="mac-base-front">
+          <!-- Muesca central para el pulgar reflectante -->
+          <div class="mac-thumb-notch"></div>
+          <!-- Patas de goma -->
+          <div class="mac-foot-left"></div>
+          <div class="mac-foot-right"></div>
+        </div>
+      </div>
+
+      <!-- 3. Sombra realista de apoyo (doble capa) -->
+      <div class="mac-contact-shadow"></div>
+      <div class="mac-ambient-shadow"></div>
+
+    </div>
+
+    <!-- Nota Inferior Fiel a Image 1 -->
+    <p class="text-center text-xs text-ink/45 mt-4">
+      Canal Oficial: <strong class="text-ink/65">Breath Holding</strong> • Se abrirá en una nueva pestaña
+    </p>
     </div>
 
   </div>
